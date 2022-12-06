@@ -1,58 +1,67 @@
 #include "lists.h"
-#include <stdio.h>
-int is_palindrome(listint_t **head)
+
+/**
+ * reverse_listint - reverses a linked list
+ * @head: pointer to the first node in the list
+ *
+ * Return: pointer to the first node in the new list
+ */
+void reverse_listint(listint_t **head)
 {
-listint_t *nhead, *tort, *hare, *ptort;
-listint_t *cut = NULL, *half, *it1, *it2;
-if (!head || !*head)
-return (1);
-nhead = *head;
-if (nhead->next != NULL)
+listint_t *prev = NULL;
+listint_t *current = *head;
+listint_t *next = NULL;
+
+while (current)
 {
-for (hare = nhead, tort = nhead; hare != NULL && hare->next != NULL;
-ptort = tort, tort = tort->next)
-hare = hare->next->next;
-if (hare != NULL)
-{
-cut = tort;
-tort = tort->next;
-}
-ptort->next = NULL;
-half = tort;
-it1 = reverse_listint(&half);
-for (it2 = *head; it2; it1 = it1->next, it2 = it2->next)
-{
-if (it2->n != it1->n)
-return (0);
-}
-if (cut == NULL)
-ptort->next = half;
-else
-{
-ptort->next = cut;
-cut->next = half;
-}
+next = current->next;
+current->next = prev;
+prev = current;
+current = next;
 }
 
-return (1);
+*head = prev;
 }
+
 /**
- * reverse_listint - Reverses a linked list in pladce
- * @head: Pointer to a pointer pointing to the first item in the list
+ * is_palindrome - checks if a linked list is a palindrome
+ * @head: double pointer to the linked list
  *
- * Return: The new head of the reversed list
+ * Return: 1 if it is, 0 if not
  */
-listint_t *reverse_listint(listint_t **head)
-{listint_t *next = NULL, *prev = NULL;
-if (!head || !*head)
-return (NULL);
-while ((*head)->next)
+int is_palindrome(listint_t **head)
 {
-next = (*head)->next;
-(*head)->next = prev;
-prev = *head;
-*head = next;
+listint_t *slow = *head, *fast = *head, *temp = *head, *dup = NULL;
+if (*head == NULL || (*head)->next == NULL)
+return (1);
+while (1)
+{
+fast = fast->next->next;
+if (!fast)
+{
+dup = slow->next;
+break;
 }
-*head)->next = prev;
-return (*head);
+if (!fast->next)
+{
+dup = slow->next->next;
+break;
+}
+slow = slow->next;
+}
+reverse_listint(&dup);
+while (dup && temp)
+{
+if (temp->n == dup->n)
+{
+dup = dup->next;
+temp = temp->next;
+}
+else
+return (0);
+}
+
+if (!dup)
+return (1);
+return (0);
 }
