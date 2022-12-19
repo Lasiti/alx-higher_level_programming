@@ -1,10 +1,18 @@
 #!/usr/bin/python3
 def safe_print_division(a, b):
+    '''
+    Safely prints the quotient of two integers
+    Parameters:
+    a (int): The first integer
+    b (int): The second integer
+    Returns:
+    The quotient of the two integers, otherwise None
+    '''
+    res = 0
     try:
-        result = a / b
-        print("Inside result: {:.1f}".format(result))
-    except:
-        result = None
-        print("Inside result: {}".format(result))
+        res = a / b
+    except Exception:
+        res = None
     finally:
-        return result
+        print("Inside result: {}".format(res))
+    return res
